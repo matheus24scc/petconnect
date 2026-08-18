@@ -153,3 +153,13 @@ The application can be deployed to AWS using:
 ### License
 
 This project is licensed under the MIT License.
+
+## Status (checkup 2026-08-18)
+> Revisado na campanha de repo-checkup. Relatorio completo: `~/repo-checkup/reports/petconnect.md` (local do mantenedor, nao no repo).
+- **Build/Install**: `npm ci` (backend, apos `backend/package-lock.json` adicionado no checkup) RC=0 — 96 pacotes, 0 vulnerabilidades; backend Node sem build step. Frontend React Native NAO instalavel (so `frontend/App.js`, sem `package.json`); Docker NAO testado (ausente no ambiente).
+- **Smoke test**: `node src/server.js` sobe e `GET /` -> HTTP 200 ("PetConnect Location-Based Pet Social Network API"); `node --check src/server.js` OK.
+- **Para rodar de ponta-a-ponta precisa de**: PostgreSQL + PostGIS, Redis e Docker Compose (segundo o README; o relatorio nao testou Docker por estar ausente neste ambiente); frontend Expo incompleto.
+- **Inconsistencias conhecidas (README vs codigo)**: README referencia `.env` a partir de `.env.example`, mas `backend/.env.example` nao existia (criado no checkup); `docs/ci-guide.md` afirma que o CI roda `npm run lint && npm run build`, mas `package.json` nao define `lint` nem `build`; frontend incompativel com o README (cita Expo + `package.json` + `src/` completo, mas so ha `App.js`); nenhum workflow `.github/workflows/ci.yml` real.
+- **Seguranca**: 0 vulnerabilidades (`npm audit`); nenhum segredo hardcoded (secret scan: api_key/secret/token/password/sk-/ghp_/AIza); `.env` gitignored.
+- **Estado resumido**: backend verde (install + smoke `/`->200, 0 vulns); frontend RN incompleto e Docker nao validado neste ambiente — precisa de acao humana para completar o frontend e validar runtime com Postgres/Redis/Docker.
+
